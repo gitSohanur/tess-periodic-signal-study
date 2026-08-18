@@ -1,1 +1,285 @@
 
+# TESS Light Curve Project
+# Progress
+
+Date: 11.08.26  
+**Topic: Starting TESS Light Curve Project** 
+
+Objective: define time-domain astronomy, distinguish from static imaging — ✅ achieved  
+Evidence: correctly identified "change over time as the signal of interest" using Cepheid and GRB examples  
+Minor note: keep time-domain vs. multi-messenware distinct as separate axes going forward
+
+**12.08.26**
+
+Objective: survey → broker → follow-up pipeline — ✅ achieved  
+Evidence: correctly reasoned about alert-rate bottleneck and applied survey/follow-up distinction to TESS's specific limitations  
+Direct connection made to Phase 5 project constraint: TESS archival analysis → periodic signals are the appropriate target, not transient discovery
+
+**16.08.26**
+
+Objective: instrument/facility landscape (TESS, ZTF, Rubin/LSST, GW detectors, radio, neutrino) — ✅ achieved  
+Evidence: correctly distinguished GW physics from EM; initially conflated multi-wavelength with multi-messenger (Chandra/Hubble example) but self-corrected with a genuine multi-messenger pairing (LIGO \+ ZTF) on redo  
+Note for Phase 8: keep multi-wavelength vs. multi-messenger distinction sharp — likely to come up as a workshop discussion point
+
+Objective: SNR concept, computation, noise-averaging mechanism — ✅ achieved, strong understanding  
+Evidence: correct SNR calculation with proper marginal/strong framing; independently articulated the noise-cancellation mechanism behind N\\sqrt{N} N​ scaling without being given the formula  
+Note: this reasoning is exactly what underlies phase-folding in Phase 4 — worth referencing back to this lesson when we get there
+
+Objective: quadrature-based error propagation for addition/subtraction and multiplication/division — ✅ achieved  
+Evidence: Q2 fully correct including fractional→absolute conversion; Q1 correct method with a transcription error in the final boxed answer (0.13 vs. 0.0128), self-corrected on request  
+Habit reinforced: sanity-check uncertainty magnitude relative to the measured value before finalizing
+
+**17.08.26** 
+
+Objective: Gaussian distribution, σ-confidence intervals, look-elsewhere effect — ✅ achieved, all three correct  
+Evidence: correct 95% CI calculation, correct z-score with appropriate strong/marginal calibration, correct expected-false-positive-count reasoning  
+Minor note: watch for transcription slips (2.0 written as 2.9) when copying values mid-calculation — didn't affect this result but worth double-checking before boxing final answers
+
+Objective: install lightkurve, search TESS archive, interpret search results table — ✅ achieved  
+Evidence: successful search (235 products found for TIC 25155310), correct column identification  
+Note: target has extensive multi-sector coverage (useful for Phase 5\) and a pipeline-cadence change across sectors (SPOC 120s → 20s) — worth remembering for later data-quality discussion
+
+# 3️⃣ Phase 3 Lesson 2
+
+**Research log entry (Phase 3, Lesson 2 — Download, Load, Inspect a Real Light Curve):**
+
+* Objective: download/plot/inspect a TESS light curve, compare flux std to flux\_err — ✅ achieved  
+* Evidence: successful download and plot (TIC 25155310, 18,278 points), correct numeric extraction, and — notably — independently identified an obvious periodic transit-like signal in the plot and correctly reasoned that raw std() conflates signal with noise  
+* Flag for Phase 5: this target shows a strong, visually obvious periodic dip pattern — a strong candidate for the main portfolio project target, worth considering when we get there
+
+# 3️⃣ Phase 3 Lesson 1 (py env)
+
+**Python environment** 
+
+**`astropy` — the foundational astronomy package for Python. Handles units, coordinates, time systems (critical — astronomical time isn't just Unix timestamps; there are subtleties like barycentric correction that we'll cover when they matter), FITS file I/O (the standard astronomical data format), and more.** 
+
+**`lightkurve` — built on top of astropy, specifically designed for Kepler/K2/TESS time-series data. It handles searching for, downloading, and doing basic operations on light curves with a clean, high-level interface — this is what saves you from writing raw FITS-parsing code.**  
+
+**`author = SPOC`: this is actually important, not just a label. SPOC (Science Processing Operations Center) is TESS's official NASA-run reduction pipeline** 
+
+**Objective: install lightkurve, search TESS archive, interpret search results table — ✅ achieved**  
+**Evidence: successful search (235 products found for TIC 25155310), correct column identification**  
+**Note: target has extensive multi-sector coverage (useful for Phase 5\) and a pipeline-cadence change across sectors (SPOC 120s → 20s) — worth remembering for later data-quality discussion**
+
+# 2️⃣ Phase 2 Lesson 6 (physics)
+
+**Keplerian Orbital Motion**  
+
+**The one equation you need most (Kepler's Third Law, generalized):**    
+ 
+
+**Why does a planet orbiting very close to its star (small aa a) have a *shorter* period than one orbiting far away, according to this equation?**  
+
+Two things are happening simultaneously for a closer orbit:
+
+1. Shorter distance to travel — the orbital circumference is smaller (2πa roughly), so there's simply less path length to cover.  
+2. Faster orbital speed — gravity is stronger at smaller aa a (inverse-square law), so the planet must move faster to maintain a stable orbit against that stronger pull (otherwise it would fall in).
+
+**Stellar Evolution Endpoints**   
+stars spend most of their lives fusing hydrogen (main sequence), but what happens when they run out of fuel depends almost entirely on initial mass. 
+
+**Compact Objects** 
+
+Why these matter for time-domain/multi-messenger astronomy specifically:
+
+* Neutron stars can be observed as pulsars — rotating neutron stars with beamed radio (or other) emission sweeping past Earth like a lighthouse, producing extremely regular periodic signals. This is a *time-domain* phenomenon by definition.  
+* Compact object mergers (neutron star-neutron star, neutron star-black hole, black hole-black hole) are the sources of the gravitational-wave events you learned about in Phase 1 (recall GW170817).
+
+ 
+
+**Redshift and Distance Modulus**   
+Redshift (z): the stretching of light's wavelength due to relative motion or cosmic expansion.  
+
+ 
+
+**Distance modulus (μ):** relates apparent magnitude (m, how bright something looks) to absolute magnitude (M, its intrinsic brightness) via distance d (in parsecs): 
+
+![][image1]
+
+Flux & magnitude: ✅ correct, no errors  
+SNR: ✅ correct, strong independent reasoning on noise-averaging mechanism  
+Uncertainty & error propagation (quadrature): ✅ correct after one self-corrected transcription slip  
+Probability distributions (Gaussian, σ-confidence, look-elsewhere effect): ✅ correct, all three parts  
+Mean/variance/covariance/correlation: ✅ correct, clean methodology  
+Least-squares fitting: ✅ correct, good residual interpretation with appropriate caution  
+Physics briefings (Kepler's Third Law, stellar evolution/Chandrasekhar limit, compact objects/pulsars, redshift/distance modulus): ✅ all quick checks correct, one mechanism (degeneracy pressure vs. thermal pressure) added for completeness
+
+# 2️⃣ Phase 2 Lesson 6 (lsf)
+
+**least-squares fitting**
+
+   
+[What is Least Squares?](https://youtu.be/S0ptaAXNxBU)
+
+**The problem:** you have data points (xi,yi) and you want to find the "best" straight line y=mx+b that describes the trend. But "best" needs a precise definition: different lines will pass closer to some points and farther from others. 
+
+**The least-squares definition of "best": for any candidate line, define the residual at each point as:**  
+
+**![][image2]** 
+
+This is the vertical distance between the data point and the line — positive if the point is above the line, negative if below. The least-squares method finds the mm m and bb b that minimize the sum of squared residuals:  
+
+**![][image3]** 
+
+**Why squared, not just summed residuals? Two reasons, and both matter:**
+
+1. If you just summed raw residuals, positive and negative deviations would cancel out — a terrible line could have a sum near zero purely by having points scattered symmetrically above and below it. Squaring (like in variance) forces every deviation to contribute positively, so cancellation can't hide a bad fit.  
+2. Squaring penalizes *large* deviations much more heavily than small ones — a residual of 4 contributes 16 to the sum, while a residual of 1 contributes only 1\. This makes least-squares sensitive to outliers, which is a double-edged property: it fits "typical" noise well but can be badly distorted by a few extreme outlier points. This connects directly to your future data-quality audits — you'll need to remove bad/flagged points *before* fitting, or your fit will be skewed by them.
+
+The closed-form solution (found via calculus — minimizing S by setting partial derivatives with respect to mm m and bb b to zero) gives:  
+
+**![][image4]** 
+
+# 2️⃣ Phase 2 Lesson 5
+
+**mean, variance, covariance, and correlation** 
+
+**Mean — the average value of a dataset:**  
+
+**Variance — measures how spread out the data is around the mean:** 
+
+*Note on N vs N-1:* When computing variance from a sample (as opposed to knowing the true population), you often divide by (N−1) instead of  N — this is called Bessel's correction, and it corrects a subtle bias that occurs because you're using the sample mean xˉ (itself estimated from the same data) rather than the true population mean. For large datasets (like thousands of TESS photometry points), the difference between N and N−1 is negligible  
+
+**Covariance — measures whether two variables tend to move together:** 
+
+**If x and y tend to be above their means at the same time (and below at the same time), the products are mostly positive → positive covariance. If one tends to be high when the other is low, covariance is negative. If there's no relationship, positive and negative products roughly cancel → covariance near zero.** 
+
+ **Correlation — covariance normalized to always fall between \-1 and \+1, making it much easier to interpret:**  
+
+ 
+
+If your "transit signal" is actually strongly correlated with, say, a systematic pointing wobble rather than being an independent periodic dimming, that's a major red flag suggesting the signal isn't astrophysical. 
+
+**One assumption stated explicitly: correlation as defined here (Pearson correlation) only captures *linear* relationships. Two variables can be strongly related in a nonlinear way (e.g., y \= x2) and still show a Pearson correlation near zero. Don't over-interpret "correlation ≈ 0" as "no relationship at all" — it specifically means "no *linear* relationship."** 
+
+# 2️⃣ Phase 2 Lesson 4
+
+**probability distribution**   
+normal (Gaussian) distribution   
+(why "3-sigma" and "5-sigma" thresholds exist in astronomy )
+
+**The normal (Gaussian) distribution** is by far the most important one in this context — it's the natural result of combining many small, independent random error sources (a result called the **Central Limit Theorem**, which is *why* so much measurement noise ends up looking Gaussian regardless of its origin). Its shape is the familiar symmetric bell curve, defined by:  
+
+where μ is the **mean** (center of the distribution — your best-estimate value) and σ is the **standard deviation** (a measure of the spread/width). 
+
+Summary:   
+Gaussian error (also called *normal* or *Gaussian noise*) is the type of error that follows a bell-shaped curve. It happens when many small, independent random sources combine (thanks to the *Central Limit Theorem*). This is the most common model for measurement uncertainty in science. 
+
+Key traits:
+
+Symmetric around the mean  
+Most values cluster near the center  
+Predictable tails (e.g., ±1σ ≈ 68% of data, ±2σ ≈ 95%)  
+Described fully by just two numbers: mean (μ) and standard deviation (σ)
+
+Objective: Gaussian distribution, σ-confidence intervals, look-elsewhere effect — ✅ achieved, all three correct  
+Evidence: correct 95% CI calculation, correct z-score with appropriate strong/marginal calibration, correct expected-false-positive-count reasoning  
+Minor note: watch for transcription slips (2.0 written as 2.9) when copying values mid-calculation — didn't affect this result but worth double-checking before boxing final answers
+
+# 2️⃣ Phase 2 lesson 3
+
+**What "uncertainty" means** 
+
+**No measurement is perfectly exact. When you write X±σx, you're saying "my best estimate is X and the true value is likely within roughly ±σx of that** 
+
+**Random (statistical) uncertainty** — from noise sources like photon counting, that averages down with more measurements (this is exactly the N​ behavior from the SNR lesson).  
+**Systematic uncertainty** — consistent, repeatable biases (e.g., a miscalibrated detector, an incorrect zero-point) that do *not* average away no matter how many measurements you take. This is a critical distinction: systematics require a completely different fix (better calibration, not more data)
+
+**Objective: quadrature-based error propagation for addition/subtraction and multiplication/division — ✅ achieved**  
+**Evidence: Q2 fully correct including fractional→absolute conversion; Q1 correct method with a transcription error in the final boxed answer (0.13 vs. 0.0128), self-corrected on request**  
+**Habit reinforced: sanity-check uncertainty magnitude relative to the measured value before finalizing**
+
+# 2️⃣ Phase 2 lesson 2
+
+**signal-to-noise ratio (SNR)**   
+CASSA reviewers/mentors will almost certainly ask "what's the SNR of your detection?" about anything you present. 
+
+**Signal** :  the true, physical quantity you're trying to measure (e.g., the brightness dip from a planet crossing its star)  
+**Noise** :  random fluctuations in your measurement that aren't part of the true signal (e.g., photon-counting statistics, detector read noise, background light fluctuations)
+
+**Where does noise come from?** For space telescopes like TESS, the dominant sources are usually:
+
+1. **Photon noise (shot noise)** — fundamental statistical noise from counting discrete photons; follows Poisson statistics, so for NN N photons detected, the noise is N\\sqrt{N} N​, meaning SNR from photon noise alone scales as N\\sqrt{N} N​ (this is why longer exposures / brighter stars give better SNR — more photons collected).  
+2. **Read noise** — noise introduced by the detector electronics when reading out the signal.  
+3. **Background/sky noise** — for ground telescopes, sky brightness; for TESS, scattered light and other systematic backgrounds.  
+4. **Systematic noise** — instrumental effects, spacecraft jitter, etc. — not random, harder to characterize, and important for your Phase 6 validation later.
+
+**A critical intuition for your project:** a "3-sigma" detection (SNR \= 3\) sounds impressive but isn't necessarily convincing on its own — by pure chance, if you search enough data points or enough possible periods, you *will* find some 3-sigma-looking fluctuations that aren't real. This is called a "multiple testing" or "look-elsewhere" problem, and it's exactly why exoplanet detections typically require much higher SNR thresholds (often 7-10+) before being taken seriously as candidates. 
+
+Objective: SNR concept, computation, noise-averaging mechanism — ✅ achieved, strong understanding  
+Evidence: correct SNR calculation with proper marginal/strong framing; independently articulated the noise-cancellation mechanism behind N\\sqrt{N} N​ scaling without being given the formula  
+Note: this reasoning is exactly what underlies phase-folding in Phase 4 — worth referencing back to this lesson when we get there
+
+# 2️⃣ Phase 2 Lesson 1
+
+Every light curve you'll ever look at — TESS, ZTF, anything — is fundamentally a plot of brightness vs. time. Before you can detect a transit, a pulsation, or a flare, you need to be fluent in what the y-axis actually means, **and why a "dip" of 0.01 magnitudes is a completely different thing than a dip of 1 magnitude.** 
+
+**What is flux?**
+
+* **Flux is the physical quantity: the amount of energy from a source received per unit area per unit time, at your telescope.**   
+* **Units are typically erg/s/cm²**   
+* **More flux, more bright object.** 
+
+**What is magnitude?** 
+
+* **a *logarithmic*, historically-rooted brightness scale.**   
+*    
+    
+  
+
+
+**Don't assume every dataset you touch will be in magnitudes — always check the units first, which is a habit we'll drill into you.** 
+
+**Research log entry (Phase 2, Lesson 1 — Flux & Magnitude):**  
+**Objective: flux/magnitude relationship, log scale, sign convention — ✅ achieved**  
+**Evidence: both practice problems solved correctly with full working shown**  
+**Habit to build: use Delta m sign as a physical sanity check (negative \= brighter, positive \= dimmer)**
+
+# 1️⃣ Phase 1 Lesson 1
+
+**Objective:** define time-domain astronomy, distinguish from static imaging — ✅ achieved  
+**Evidence:** correctly identified "change over time as the signal of interest" using Cepheid and GRB examples  
+**Minor note:** keep time-domain vs. multi-messenware distinct as separate axes going forward
+
+**11.0826**
+
+# 1️⃣ Phage 1 Lesson 2
+
+**1\. Surveys (the "eyes")**  
+A survey telescope repeatedly scans large areas of sky, rather than staring at one target for a long exposure. Its job is *discovery* and *monitoring* — finding new variable/transient sources and building light curves for known ones.   
+Ex: TESS, ZTF
+
+**2\. Instruments (the "how")**  
+This is the physical apparatus — the telescope \+ camera/detector \+ software pipeline that turns photons into calibrated data (like a TESS light curve file). 
+
+**3\. Alert brokers (the "triage")**  
+A survey like ZTF or Rubin produces an overwhelming stream of data — millions of detections per night. Most are boring (known stars, noise, asteroids). An **alert broker** is software infrastructure that ingests this firehose, cross-matches against known catalogs, applies classification/filtering algorithms, and pushes out **alerts**: "this is a likely new transient, here's why, here's its light curve so far." Examples include ALeRCE, ANTARES, Lasair (all ZTF-connected; Rubin will have its own brokers). This is the layer that makes *real-time* science tractable — without it, no human or telescope could react fast enough to the data volume. 
+
+Objective: survey → broker → follow-up pipeline — ✅ achieved  
+Evidence: correctly reasoned about alert-rate bottleneck and applied survey/follow-up distinction to TESS's specific limitations  
+Direct connection made to Phase 5 project constraint: TESS archival analysis → periodic signals are the appropriate target, not transient discovery
+
+**12.08.26**
+
+# 1️⃣ Phase 1 Lesson 3 (final)
+
+Lesson 1: Time-domain astronomy definition, periodic/transient/stochastic categories — ✅  
+Lesson 2: Survey → broker → follow-up pipeline; TESS's archival/non-broker nature — ✅  
+Lesson 3: Instrument landscape (TESS, ZTF, Rubin/LSST, GW detectors, radio, neutrino) — ✅  
+Closing synthesis: correctly explained time-domain astronomy end-to-end after one self-correction (TESS/broker misattachment, independently fixed)  
+Recurring theme to watch: precision in attaching specific claims to the correct instrument/survey — good instincts, needs care in written phrasing
+
+# 🌐 Source
+
+[https://www.mdpi.com/2218-1997/11/11/355](https://www.mdpi.com/2218-1997/11/11/355)
+
+[https://science.alerce.online/](https://science.alerce.online/) (ALert Broker)   
+[https://github.com/alercebroker/usecases](https://github.com/alercebroker/usecases) 
+
+[image1]: <data:image/png;base64,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>
+
+[image2]: <data:image/png;base64,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>
+
+[image3]: <data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAWgAAABdCAYAAACIJfx/AAARQUlEQVR4Xu2dP2gbyRfHf72KFOpULlwRQ4oIrjCksCBFBCkiSCFzRQQubLkIwkVkAmFJczEBI1LYJkXEFUF2EezCWCkO28Vhpwh2IFgugn2FkYqAVRhvIbjA+83M7sr7V5al1e5I/hYfiFcrZXd25rvvvXnz5n+/fv1HAAAA5ON/zgMAAADkAAINAACSAoEGAABJgUADAICkQKABAEBSINAAACApEGgAAJAUCDQAAEgKBBoAACQFAg0AAJICgQYAAEmBQAMAgKRAoAEAQFIg0AAAICkQaAAAkBQINAAASAoEGgAAJAUCfUvYf5ui1O9jpPyWooXv5vE6rU6nKHl3jJITGSp9c3/vNtBYm6HUgyRrG4XyG5ft47zNxu8rlHyQosLGuet7AAwaCPQtYv9FltITMYo/37YcP6KF2WVqeJx/m2h8KFD6UZxiE/a22HheoJ2W+3wAwgACfWs4odKrCrMWsxSLZWn1wjh+USF18cTj/NtF9ZVKh99VGouNkdr2MA5IfbXlOheAsIBA3xYaZZp/x4S4tU2FeIxSS3X9+GaB5v/xOP9WsUfzL7gQ12nF6mH8KFHhg9FOAEQABPq2sKmS+lX/d+31GMXuqlRj/z58rVL1trvwTIjVNT32rFk8DG1NpdIPj/MBCAkI9C1h/0WRqubfzQplYnEq7B5Raa6M+POHIpX+Nf5uHZB6l3sYJ1SdK9K+x/kAhAUE+lagx581y7Gd53GKPUpTAfFnPf5s+buxlGIeRprSiD+DiIFA3wbM+LP1mJgQY1Y04s9G/Nly7KJCk7EYpRF/BhEDgR5xDt/PUOZ+jGL3MrTw2So4dVp5lLvV8efGpkq5hwrFEinKfTiwfbbzPI34M4gcCDQAAEgKBBoAACQFAg0AAJICgQYAAEmBQAMAgKRAoAEAoCOXdPpJpfzsDOVfr9Op5vx8cECgR4DqdIxisSviiiJKZ3ZD3PI9L+yV74aP03fj9ntKuNvAj8Qdd3vYcFS+A6PJ6bscLXzjpQAuqfZnkmL3VToMKT0VAj0KNNcpF78SjrFX9pze7rikZuOEDj8vk/p03CLclsp3vdA6p/2lorA+5pf2qBlSx27TOqKF3y2i+rRCTec5XaD9rFNtt0Kl2TQpbeG2Vr4Do8kJlXj/mTYWM13wMgkxyn92njcYINAjQnMzR4m2qCYot9lngXnthDZmk+L32pXvbswlVecKtPrzPyHUG8/iFMv2JpB9cVyicYvlO7545D7nJvCXzmKGlNjwexjgeprft2j/zPi7UaZ0iCtwh1OgW8zaa17tfBE1WvOctLAtQw8OX41dWYqJHFWb7nNuSnODCX+816L1W5TjgmguM/+qMlEbvypMFCLNtcxV2/BrOHafc1O072+Y8KdoxRy8HWF99qc8fRbY6XYMny4yo+VBiU49PhsE0gi01uTu9Tpt7B5R0wzCnx25A/LMZS0/yQQywG7MxTk1Gue2okMCZqGlHpao1sUDHiisbUoPLO78o2Aq1dUWUzRplOO8KY0vW1QzXxT/FCgeS1O54T5v8JxTdSpheYEVaD+A58U9l9Tr6yzyc9qZS1G+X68G9E8/Y9g8x6lJAyR6gW7VafUPheL3c1T6uE6rizOU+i1JhSWVxvkgsp3PXOZpJfwiNl+ZpZQwBrZir3xmwi00ZWorfPfdyY+A3XlOIB4Le3ZTcUpMb7kHR1hcbFHefI6MRCDP63rLmE9UKnN7ruMgRPodw8dlys1WqMEF/OKIal15Tf0TsUCfCIsv+XLP3iiiXjFryClHlTFmgSWMQvPu3xo0e2InEtc1teG7ccQpt9l5sIYBD0tcTfIlaSEKb8NBc3OGxqfXw58kdHL8hpLttmHPa9CbwZ6VKX2nz4lWEBA9juHmFhWmlqnWqDPru06n74uhjalIBVrsXuET39x45iz3qG9H1PuEVZ8wy5QP7EwHV1/cT2QvECtOd36GqhEKRHO3SLnXxkv4jFkfEV4Lp7ZoTb0bH2jVOl53GxOJktDTGK5T+fGV16WTow0PzRoEEQr0Ja0+ZTd7/42noFWnkvaBIxo3qvgl33UjLazRjoNZpOAo7a2lIqXFrIXA3fkeOC5R7uW2sDw4Oy+KoXVuf9ige2QZcA+uiT32SotPkoY34w86M3Rj+FekAm3kF/KUMA83s/H1wDbBJRrXR8yb37bE5KI5C6s1j2jnkz7h2J6Z1er6JORn9rs9BPmrUzERu9q/0H+7+s19ze2QzdsA4r5B4Egvy6x5XXM/XNLpLmuLr3U9rmy08VXb7NG85SUh8HmGocPc1pzl2nrLHb8GMSnqY221LqlmbTsL2k+PSaww0E5Y396iw4ZhYbJrbHxlY8t6jKEdb7Nj67Rz7G2Jao0Dqlq/I8YM+5unW3qcHxbDOIYjFGhj81Jz4N5J0PjTIpU+HXjGKUXjesSOtM8zlJmrkMososR0hXZep2l8dpl1oAoVeEZDtsJEpEjpR0VaYQ9l9XmyB5ffiF3FFRrPqrT6if9/CVKm3VapuM5n6x6/EQ0udz7A2NnpuwxNLi5TTonR+JxKkw9naGWN/X0v1nPWR5gEnjvuQKRk/e6RksWzbR6mqPBRb7v0X5aw3Zciu6YoFsAwYXqSpdL7HI3xfvJ3hXIPsqR+ZEbNYpZdU5LUL0dUzqYpt1hh4+sNZeKWFEqD2jtz/JVoMsHadFGlzBM2Zj7MsN+NzgMe1jEcqUCLlLmsYrewOBPLjk6tW9uKy8qp08oTPYatL3e2DzIxQNjv2R6CEYfKbXpcjx/Gd2xhAja4vdwl30FpobmWcy0r7kyOVnvOaT7XQ0lm2wblzre2qfCEL3XWLY5YnFmKzaul1T1n2jSZMLjuvzO5PjyDQeSOm4iB/tS+FySHe4OT/JpFCIRZ75Y0vcNXfDz4WN2DZLdAGT6/86/hddn6iX6dsTsp2wte3J+1rzOPIWUZo+JzsRLVDCm5x0toBDyGwyJagTYRrtQ6lWZTYnUWn123x+10gU46NzjVtig/x63qI1rg2zo9KdvehvtzcdHZbds6iYdysxiTJhY5OB6k+B230IuH65PGExmDcOe/lyi/xJ5Ha10M3vbL84w9x8VtPR3J+R0ZceaO97gU3Atvr++SqrMF0SfFhJTNWjaEzJK/3tx9Qwu7nV9AWlOP73dD08dzrC0y74f37w19fMx/sXwuVs85x58RorS8gA7/nKHVtoVsvLiNz5tflpl3fGJ/WR0zK/Zj51BCEPcmfmdIx3A0At06p9oP704ndlR2NZqPQJsYHchutbk7EEeItk/miB9ioMXtOdm6peNek69b7TNU9fidKOGhoLY7r7D77yEO74mIszpfqHa6EZlIseaOMytxJaCVjt4CbXJJq9mYPWPAqPNwFf/kS+XTNP9Pp3BRnapMGEWltW5w7L3oxBwftvUHXkaNMeZ8s6rMe/Ebs4zTpSxN/uX/eZD3NqxjOBqB/qraXCEbXp3hOoE23vpeHcj2He6Wx29aP8EQeltMynTZ3PmtXblHGl/N5LYA/OluGep17L9IBO7G197yztzJJe9GZOznN13335lOllO3NMUMf7Ax+o4CbYQ3bGE79hJ1e49hYniiXkaNwxPVDakOy9w9x3FUDGAMh0QkAs0bIO6zskrEBF2NY6TkmRWlHOgdyPHG8+ogu4a1t/ufeMNPTq3rHZGvlPMVQY+Xw9kypWLeoQLxVr5urf7ZnpgF757t/nOHeUbHnWAFyMsl75tWnfZd998Zv2yCrhEhoOAnCTv2BY+5EN2iy+iC0dyjldk0pV9sBxZyuRbDqLFP/Hl5ovqaBLPcau11RizcqH3MUTpbFvfrEnWe9pk1yrOyZ1x9maHUH+Vg5kOuZQBjOCQiEGhDbI1JJetnoviMj4iIB+4pBJ3e+nbRFhak4eacLqbbK4bEcf6wPGsq6K7olaVjLALxmWzjC2z8Xj6RMSABcsWfnUQhMjfFiEEHsiTegUgNdYYLTIzJuLZAm/MERh/ff1eiQ423L7PwggpHXUcHT9Qm2k1LSPGCXfcjLmZblOchokSR9pkYzysxm6Gl13PR+1/jrxKtNvm4DStbZXjHcPgCzV07JUsrfxUpmVAo/UyllU8VKk2NU+K3DJW++IgIt4i9OrvGLGHeWaypSuYERdYu2jwOqyTGafKZXTROjbi371vzuEyZ35KUmZ2h3IRCCrMEvAumHJCqOOPnEdPcpsI9Xr8keAH69V2lsVjCPqFkIRKRuQk8i+ixQmNzA3qBdFxcdS7qysTuZSg/yyzPe9ygMK28S6od1/U+75EFMihE2isXWOtxEXZxCumJsKDHHs9Q5lGWysKgOmcimKBklo0RnkL4qUx5RaHUsxnK/5GijLmSlNE4PiKNt02YE3FDOobDF2hroRHtXCTrczdVJOx7vM2uvseF2Dum5ZnYf3F+VRXPcbzhWfiHuWCPfQRaoMdGO8Y7hWC5Y1qRMUDrUKdToaBoRKZ7dCtqsCssj0i967O0+EIPqelZCuzfIiRnFULd6gs1n5yNR3f/9nvGXmFBY4y0x53z7yv4y8DbYx0kwzeGwxfoPuDx6ZtN8N0A9mDSfXYYfn1eMa1oCEOAriMCkekSsYDHx8UNElGH2rk1lpk10p5TMTw+awhPhBZ4DPeASm8H1Ocjgy8a4SlvrH+8lWvbMLnG8JAJtCgXqTCX0W/muFdazGV73Ofv8gp8SrAZEv0QqACdbYkcVtfx65BUZMQKwqCyWdi9rSztdfAQuPgq9swMI2xQ4KmHLfYinRuj2L0C7Vivh7fd3RwtvCrSaj/9Ukp4CYAUzb8r0EJkGSseSDaGOcMl0BxeNHsiIOEx+VGhlb7ydHn8TZGmILsuzirtB9LR+FZVXEycx7tAQpHRxTkb2PXwNEPfXGATPgF43zLwW3XamE1RciJFqd9TlPPbq5GHHDzCAyMBz5ySJIygI9cYNhk+gf7FVyWplHsrjxtSe5+j+b4EPjiCtQ4N666fyRyZRCbQVMNLqi2lKWGmxbk+d3BWofzz9QjDTaATMo1hK0Mp0MCHwATokhq7y8zq44n8fumHQ0aAqYba8TrNPzRqyDgyhQAIEgj0qPBzXeTRZt4fuVbaXct3vXzk6mKR8k/HSeFVv7j4CNzFZIYO7YgWHrAXzYurutRd8y8vnblOG+9Vyj9LU9JRPlWWdCwwmkCgRwFHMaRAcWYgDBvOYkhBcsOaLgDcFAj0CHD6qeguHBMQC5+vmQCTHO3LsuueAqNDcR4AggACDQAAkgKBBgAASYFAAwCApECgAQBAUiDQo0gXWwn5cnFA5Xdbw5250YnWEa2+rvS2ElWrU/VtufdFOwDcEAj0CHL9VkIe8JVuE2nKZ+XZTWIg/FimSaOovOszX/Zo4WGaMn+kSeG1RVyfAzAYINDADi97OcoC3Q+ivjMEGoQHBHqUCGIroREW6MZmkTITZoH5HoBAg5CBQI8Q7q2ELmnnVYpSDzswXbHHm0dVoM/KVFo7F9XnzNoi2t+quz1szNir3kGgQchAoEeIQLYSGlmBPqLaBd881HtXnq6AQIOQgUCPGM6thPQtlTrg3M5oVAWaw7czuqtSzfxbO3e3hw3Hlk4QaBAyEOiRwr2VkPbTKTq3V6D5Tu98U1Zt7Q2t8NAF35/S2R4QaCAREOiRop+thA6oPMt3PE4Q346J735c/uY8Z7jZf5Gg1MsSFd7uuT7rTJ2qf85Q/skYa5uE2Kl62ItIgeEAAj1qSLeVkFxonju6AyAnEGgAAJAUCDQAAEgKBBoAACQFAg0AAJICgQYAAEmBQAMAgKRAoAEAQFIg0AAAICkQaAAAkBQINAAASAoEGgAAJAUCDQAAkgKBBgAASYFAAwCApECgAQBAUiDQAAAgKRBoAACQFAg0AABICgQaAAAk5f8HOjwxp7vbwgAAAABJRU5ErkJggg==>
+
+[image4]: <data:image/png;base64,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>
